@@ -1,4 +1,4 @@
-use mlz6502::{Cpu6502, Memory};
+use mlz6502::{cpu::Cpu6502, memory::Memory};
 
 fn main() {
     let mut memory = Memory::new();
@@ -11,7 +11,16 @@ fn main() {
     println!("  a = {:02x}", cpu.a);
     println!("  x = {:02x}", cpu.x);
     println!("  y = {:02x}", cpu.y);
-    println!("  p = {}C | {}Z | {}I | {}D | {}B | {}V | {}N", flag_str(cpu.p & 0x80), flag_str(cpu.p & 0x40), flag_str(cpu.p & 0x20), flag_str(cpu.p & 0x10), flag_str(cpu.p & 0x08), flag_str(cpu.p & 0x04), flag_str(cpu.p & 0x02));
+    println!(
+        "  p = {}C | {}Z | {}I | {}D | {}B | {}V | {}N",
+        flag_str(cpu.carry()),
+        flag_str(cpu.zero()),
+        flag_str(cpu.interrupt_disable()),
+        flag_str(cpu.decimal()),
+        flag_str(cpu.break_flag()),
+        flag_str(cpu.overflow()),
+        flag_str(cpu.negative())
+    );
     println!("  sp = {:02x}", cpu.sp);
     println!("  pc = {:04x}", cpu.pc);
     test_execution_successful(&cpu);
@@ -26,6 +35,10 @@ fn test_execution_successful(cpu: &Cpu6502<Memory>) {
     }
 }
 
-fn flag_str(masked_p: u8) -> &'static str {
-    if masked_p == 0 { "!" } else { "" }
+fn flag_str(flag: bool) -> &'static str {
+    if flag {
+        ""
+    } else {
+        "!"
+    }
 }
