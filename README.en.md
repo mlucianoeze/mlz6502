@@ -1,0 +1,19 @@
+# mlz6502
+
+[README en español](README.md).
+
+It was Friday night, I was sipping on a little wine at home and chatting with a friend about how absolutely amazing emulator devs are, when in a sudden fit of madness I thought: "What's stopping **me** from building an emulator?" So I came up with the crazy idea of jumping into a little project of that sort.
+
+Luckily, I've got a decent grip on the kind of knowledge you need to build your own emulator: understanding how a processor works, how it talks to the rest of its components, what an instruction set is and how it's implemented in hardware. On top of that, I'm pretty comfy with super low-level projects. I've got a few unhealthy obsessions like the Linux kernel, and some professional experience in low-level stuff that taught me how to survive in those waters.
+
+So that's when I went for it and started with something relatively simple: the legendary 6502. A straightforward architecture, a limited but complete instruction set, and endless possibilities to expand it into cool stuff like the Apple II, the Commodore VIC-20, or even the Commodore 64, the NES, and a whole lot more. And me, being a total Nintendo fanboy... well, you can imagine I wasn't gonna let that one slip by.
+
+Now, the thing is I've also been a back-end developer for many years, so my professional life has taken me down many paths filled with the sweet aroma of Java, clean architectures, and (sometimes) tidy codebases. That's what sparked this irresistible urge to make my emulator architecturally pleasing, with code that's elegant, readable, self-documenting, and maintainable. And honestly? All this expressiveness is, at best, unnecessary. Just take a look at the source code of some successful low-level projects and you'll see: simplicity often beats flashy abstractions - sometimes, less really is more. That's precisely why I wanted to take a different route from those projects focused on raw simplicity and performance. Instead, I kicked off a big ahh experiment summed up by one question: what if a back-end developer decided to build an emulator? Like, how far can you go with a back-end dev mindset?
+
+Of course, I wasn't about to build the emulator with Java and Spring Boot, so instead I went with Rust. It's as low-level as C or C++, gives me that lovely memory safety I crave (without firing up a garbage collector like Go), and best of all, it handles a bunch of abstractions at compile time. That means the binary stays clean and free of all the architectural fluff I love to play with (which honestly doesn't really matter at runtime - it's more like a developer's comfort tool to work better with the code).
+
+Anyway, the fun part about this code is that I built it without having a clue how real emulators work today. I mean: I've never looked at emulator code before. I just winged it based on my own idea of how I think one would look. And it's got a few little quirks here and there that make it more interesting.
+
+I enjoyed a lot thinking through and designing this quirky architecture. For example, I don't implement opcodes one by one. Instead, depending on the instruction and the addressing modes it supports, I build a set of variants that correspond to the opcodes. I found this super handy since I don't have to worry about manually implementing every single variant, and I let the addressing mode handle that part as a sort of pipeline that gives the instruction implementation all the data it needs.
+
+Needless to say, this project is still very unfinished: only a few instructions are implemented, several addressing modes are missing, there's no interrupt handling yet, and I still need to deal with the infamous 6502 _decimal mode_. But hey, I'll keep chipping away at it little by little, as long as my spare time (and my urge to waste it on this beautiful mess) allows.
