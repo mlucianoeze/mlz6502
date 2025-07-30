@@ -3,7 +3,7 @@ use mlz6502::{cpu::Cpu6502, memory::Memory};
 fn main() {
     let mut memory = Memory::new();
     memory.load_rom(&[0xA9, 0x69, 0x92]);
-    let mut cpu = Cpu6502::new(memory);
+    let mut cpu = Cpu6502::new(Box::new(memory));
 
     cpu.run();
     println!("Execution finished.");
@@ -26,7 +26,7 @@ fn main() {
     test_execution_successful(&cpu);
 }
 
-fn test_execution_successful(cpu: &Cpu6502<Memory>) {
+fn test_execution_successful(cpu: &Cpu6502) {
     println!();
     if cpu.a == 0x69 {
         println!("Register A is 0x69. Execution successful!");

@@ -3,25 +3,25 @@ pub mod jam;
 pub mod lda;
 pub mod sta;
 
-use crate::{addressing::Addressing, operand::Operand, Bus, Cpu6502};
+use crate::{addressing::Addressing, operand::Operand, Cpu6502};
 use core::marker::PhantomData;
 
-pub trait Instruction<B: Bus, O: Operand> {
+pub trait Instruction<O: Operand> {
     const NAME: &'static str;
     const ILLEGAL: bool = false;
-    fn exec(cpu: &mut Cpu6502<B>, op: O);
+    fn exec(cpu: &mut Cpu6502, op: O);
 }
 
 #[derive(Copy, Clone)]
-pub struct InstructionEntry<B: Bus> {
+pub struct InstructionEntry {
     pub name: &'static str,
     pub illegal: bool,
     pub cycles: u8,
-    pub handler: fn(&mut Cpu6502<B>),
+    pub handler: fn(&mut Cpu6502),
 }
 
-impl<B: Bus> InstructionEntry<B> {
-    pub const fn new<I: Instruction<B, O>, O: Operand>(handler: fn(&mut Cpu6502<B>)) -> Self {
+impl InstructionEntry {
+    pub const fn new<I: Instruction<O>, O: Operand>(handler: fn(&mut Cpu6502)) -> Self {
         Self {
             name: I::NAME,
             illegal: I::ILLEGAL,
@@ -31,24 +31,24 @@ impl<B: Bus> InstructionEntry<B> {
     }
 }
 
-pub struct InstructionVariant<B: Bus, I, AM, O>(PhantomData<(B, I, AM, O)>)
+pub struct InstructionVariant<I, AM, O>(PhantomData<(I, AM, O)>)
 where
     O: Operand,
-    I: Instruction<B, O>,
-    AM: Addressing<B, O>;
+    I: Instruction<O>,
+    AM: Addressing<O>;
 
-impl<B: Bus, I, AM, O> InstructionVariant<B, I, AM, O>
+impl<I, AM, O> InstructionVariant<I, AM, O>
 where
     O: Operand,
-    I: Instruction<B, O>,
-    AM: Addressing<B, O>,
+    I: Instruction<O>,
+    AM: Addressing<O>,
 {
-    fn exec(cpu: &mut Cpu6502<B>) {
+    fn exec(cpu: &mut Cpu6502) {
         let op = AM::resolve(cpu);
         I::exec(cpu, op);
     }
 
-    pub const fn entry() -> InstructionEntry<B> {
+    pub const fn entry() -> InstructionEntry {
         InstructionEntry::new::<I, O>(Self::exec)
     }
 }

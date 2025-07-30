@@ -3,7 +3,7 @@ use crate::instruction::{jam::Jam, lda::Lda, sta::Sta};
 use crate::operand::*;
 use crate::{Bus, InstructionEntry, InstructionVariant};
 
-pub struct Cpu6502<B: Bus> {
+pub struct Cpu6502 {
     pub a: u8,
     pub x: u8,
     pub y: u8,
@@ -11,15 +11,15 @@ pub struct Cpu6502<B: Bus> {
     pub sp: u8,
     pub pc: u16,
     pub cycles: u64,
-    pub bus: B,
-    pub instruction_table: [InstructionEntry<B>; 256],
+    pub bus: Box<dyn Bus>,
+    pub instruction_table: [InstructionEntry; 256],
 }
 
-impl<B: Bus> Cpu6502<B> {
-    pub fn new(bus: B) -> Self {
-        let mut instruction_table = [InstructionVariant::<B, Jam, Implicit, Imp>::entry(); 256];
-        instruction_table[0xA9] = InstructionVariant::<B, Lda, Immediate, Val>::entry(); // TODO: try to register each opcode in its own module
-        instruction_table[0x8D] = InstructionVariant::<B, Sta, Absolute, Addr>::entry();
+impl Cpu6502 {
+    pub fn new(bus: Box<dyn Bus>) -> Self {
+        let mut instruction_table = [InstructionVariant::<Jam, Implicit, Imp>::entry(); 256];
+        instruction_table[0xA9] = InstructionVariant::<Lda, Immediate, Val>::entry(); // TODO: try to register each opcode in its own module
+        instruction_table[0x8D] = InstructionVariant::<Sta, Absolute, Addr>::entry();
 
         Self {
             a: 0,

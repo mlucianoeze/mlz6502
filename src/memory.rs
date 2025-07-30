@@ -2,7 +2,7 @@ use crate::bus::Bus;
 
 const MEM_64KB: usize = 0x10000;
 
-#[derive(Copy, Clone)]
+// #[derive(Copy, Clone)]
 pub struct Memory([u8; MEM_64KB]);
 
 impl Memory {

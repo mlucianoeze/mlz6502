@@ -1,9 +1,9 @@
-use crate::{operand::Imp, Bus, Cpu6502, Instruction};
+use crate::{operand::Imp, Cpu6502, Instruction};
 
 pub struct Jam;
-impl<B: Bus> Instruction<B, Imp> for Jam {
+impl Instruction<Imp> for Jam {
     const NAME: &'static str = "jam";
     const ILLEGAL: bool = true;
 
-    fn exec(_cpu: &mut Cpu6502<B>, _: Imp) {}
+    fn exec(_cpu: &mut Cpu6502, _: Imp) {}
 }

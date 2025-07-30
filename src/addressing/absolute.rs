@@ -1,25 +1,25 @@
 use crate::{
     addressing::Addressing,
     operand::{Addr, Val},
-    Bus, Cpu6502,
+    Cpu6502,
 };
 
 pub struct Absolute;
 impl Absolute {
     #[inline]
-    fn eff_addr<B: Bus>(cpu: &mut Cpu6502<B>) -> u16 {
+    fn eff_addr(cpu: &mut Cpu6502) -> u16 {
         cpu.fetch16()
     }
 }
 
-impl<B: Bus> Addressing<B, Addr> for Absolute {
-    fn resolve(cpu: &mut Cpu6502<B>) -> Addr {
+impl Addressing<Addr> for Absolute {
+    fn resolve(cpu: &mut Cpu6502) -> Addr {
         Addr(Self::eff_addr(cpu))
     }
 }
 
-impl<B: Bus> Addressing<B, Val> for Absolute {
-    fn resolve(cpu: &mut Cpu6502<B>) -> Val {
+impl Addressing<Val> for Absolute {
+    fn resolve(cpu: &mut Cpu6502) -> Val {
         let addr = Self::eff_addr(cpu);
         Val(cpu.bus.read(addr))
     }
