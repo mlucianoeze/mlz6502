@@ -42,7 +42,7 @@ impl<B: Bus> Cpu6502<B> {
             if entry.illegal {
                 println!(
                     "Warning: illegal instruction '{}' (0x{:02x})",
-                    entry.name(),
+                    entry.name,
                     opcode
                 );
             }
