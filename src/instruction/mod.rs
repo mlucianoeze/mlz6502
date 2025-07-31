@@ -1,14 +1,18 @@
 pub mod isa;
 
+pub mod asl;
 pub mod cpx;
 pub mod jam;
 pub mod lda;
+pub mod lsr;
+pub mod rol;
+pub mod ror;
 pub mod sta;
 
-use core::marker::PhantomData;
 use crate::addressing::Addressing;
 use crate::cpu::Cpu6502;
 use crate::operand::Operand;
+use core::marker::PhantomData;
 
 pub trait Instruction<O: Operand> {
     const NAME: &'static str;

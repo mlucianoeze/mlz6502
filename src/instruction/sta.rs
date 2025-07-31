@@ -1,7 +1,7 @@
 use crate::addressing::absolute::Absolute;
 use crate::cpu::Cpu6502;
-use crate::instruction::Instruction;
 use crate::instruction::isa::isa6502::variant;
+use crate::instruction::Instruction;
 use crate::operand::Addr;
 
 pub struct Sta;

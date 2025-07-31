@@ -1,5 +1,5 @@
-use crate::instruction::isa::isa6502::INSTRUCTIONS_6502;
 use crate::bus::Bus;
+use crate::instruction::isa::isa6502::INSTRUCTIONS_6502;
 
 pub struct Cpu6502 {
     pub a: u8,

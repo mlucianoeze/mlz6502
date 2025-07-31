@@ -1,9 +1,9 @@
-use std::sync::LazyLock;
-use linkme::distributed_slice;
 use crate::addressing::implicit::Implicit;
-use crate::instruction::{InstructionEntry, InstructionVariant};
 use crate::instruction::jam::Jam;
+use crate::instruction::{InstructionEntry, InstructionVariant};
 use crate::operand::Imp;
+use linkme::distributed_slice;
+use std::sync::LazyLock;
 
 /// This macro registers each variant in the instruction set.
 ///

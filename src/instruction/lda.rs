@@ -1,8 +1,8 @@
 use crate::addressing::absolute::Absolute;
 use crate::addressing::immediate::Immediate;
 use crate::cpu::Cpu6502;
-use crate::instruction::Instruction;
 use crate::instruction::isa::isa6502::variant;
+use crate::instruction::Instruction;
 use crate::operand::Val;
 
 pub struct Lda;
