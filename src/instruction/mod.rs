@@ -1,10 +1,14 @@
+pub mod isa;
+
 pub mod cpx;
 pub mod jam;
 pub mod lda;
 pub mod sta;
 
-use crate::{addressing::Addressing, operand::Operand, Cpu6502};
 use core::marker::PhantomData;
+use crate::addressing::Addressing;
+use crate::cpu::Cpu6502;
+use crate::operand::Operand;
 
 pub trait Instruction<O: Operand> {
     const NAME: &'static str;
@@ -15,15 +19,17 @@ pub trait Instruction<O: Operand> {
 #[derive(Copy, Clone)]
 pub struct InstructionEntry {
     pub name: &'static str,
+    pub opcode: u8,
     pub illegal: bool,
     pub cycles: u8,
     pub handler: fn(&mut Cpu6502),
 }
 
 impl InstructionEntry {
-    pub const fn new<I: Instruction<O>, O: Operand>(handler: fn(&mut Cpu6502)) -> Self {
+    pub const fn new<I: Instruction<O>, O: Operand>(opcode: u8, handler: fn(&mut Cpu6502)) -> Self {
         Self {
             name: I::NAME,
+            opcode,
             illegal: I::ILLEGAL,
             cycles: 0, // TODO: get cycles from instruction
             handler,
@@ -48,7 +54,7 @@ where
         I::exec(cpu, op);
     }
 
-    pub const fn entry() -> InstructionEntry {
-        InstructionEntry::new::<I, O>(Self::exec)
+    pub const fn entry(opcode: u8) -> InstructionEntry {
+        InstructionEntry::new::<I, O>(opcode, Self::exec)
     }
 }

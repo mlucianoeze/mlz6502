@@ -1,4 +1,5 @@
-use mlz6502::{cpu::Cpu6502, memory::Memory};
+use mlz6502::cpu::Cpu6502;
+use mlz6502::memory::Memory;
 
 fn main() {
     let mut memory = Memory::new();

@@ -1,4 +1,5 @@
-use crate::{Cpu6502, Operand};
+use crate::cpu::Cpu6502;
+use crate::operand::Operand;
 
 pub mod absolute;
 pub mod immediate;

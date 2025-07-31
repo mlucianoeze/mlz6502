@@ -1,4 +1,8 @@
-use crate::{operand::Addr, Cpu6502, Instruction};
+use crate::addressing::absolute::Absolute;
+use crate::cpu::Cpu6502;
+use crate::instruction::Instruction;
+use crate::instruction::isa::isa6502::variant;
+use crate::operand::Addr;
 
 pub struct Sta;
 impl Instruction<Addr> for Sta {
@@ -8,3 +12,5 @@ impl Instruction<Addr> for Sta {
         cpu.bus.write(addr, cpu.a);
     }
 }
+
+variant! { 0x8D => Sta: Absolute(Addr) }

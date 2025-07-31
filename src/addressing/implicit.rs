@@ -1,4 +1,6 @@
-use crate::{addressing::Addressing, operand::Imp, Cpu6502};
+use crate::addressing::Addressing;
+use crate::cpu::Cpu6502;
+use crate::operand::Imp;
 
 pub struct Implicit;
 impl Addressing<Imp> for Implicit {

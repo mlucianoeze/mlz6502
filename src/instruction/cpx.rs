@@ -1,4 +1,6 @@
-use crate::{operand::Val, Cpu6502, Instruction};
+use crate::cpu::Cpu6502;
+use crate::instruction::Instruction;
+use crate::operand::Val;
 
 pub struct Cpx;
 impl Instruction<Val> for Cpx {

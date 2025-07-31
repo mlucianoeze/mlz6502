@@ -1,4 +1,6 @@
-use crate::{operand::Imp, Cpu6502, Instruction};
+use crate::cpu::Cpu6502;
+use crate::instruction::Instruction;
+use crate::operand::Imp;
 
 pub struct Jam;
 impl Instruction<Imp> for Jam {

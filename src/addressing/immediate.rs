@@ -1,4 +1,6 @@
-use crate::{addressing::Addressing, operand::Val, Cpu6502};
+use crate::addressing::Addressing;
+use crate::cpu::Cpu6502;
+use crate::operand::Val;
 
 pub struct Immediate;
 impl Addressing<Val> for Immediate {

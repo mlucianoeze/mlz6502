@@ -1,7 +1,5 @@
-use crate::addressing::{absolute::Absolute, immediate::Immediate, implicit::Implicit};
-use crate::instruction::{jam::Jam, lda::Lda, sta::Sta};
-use crate::operand::*;
-use crate::{Bus, InstructionEntry, InstructionVariant};
+use crate::instruction::isa::isa6502::INSTRUCTIONS_6502;
+use crate::bus::Bus;
 
 pub struct Cpu6502 {
     pub a: u8,
@@ -12,15 +10,10 @@ pub struct Cpu6502 {
     pub pc: u16,
     pub cycles: u64,
     pub bus: Box<dyn Bus>,
-    pub instruction_table: [InstructionEntry; 256],
 }
 
 impl Cpu6502 {
     pub fn new(bus: Box<dyn Bus>) -> Self {
-        let mut instruction_table = [InstructionVariant::<Jam, Implicit, Imp>::entry(); 256];
-        instruction_table[0xA9] = InstructionVariant::<Lda, Immediate, Val>::entry(); // TODO: try to register each opcode in its own module
-        instruction_table[0x8D] = InstructionVariant::<Sta, Absolute, Addr>::entry();
-
         Self {
             a: 0,
             x: 0,
@@ -30,20 +23,18 @@ impl Cpu6502 {
             pc: bus.read16(Self::reset_vector_addr()),
             cycles: 0,
             bus,
-            instruction_table,
         }
     }
 
     pub fn run(&mut self) {
         loop {
             let opcode = self.fetch();
-            let entry = self.instruction_table[opcode as usize];
+            let entry = INSTRUCTIONS_6502[opcode as usize];
             (entry.handler)(self);
             if entry.illegal {
                 println!(
                     "Warning: illegal instruction '{}' (0x{:02x})",
-                    entry.name,
-                    opcode
+                    entry.name, opcode
                 );
             }
             if opcode == 0x92 {
@@ -114,12 +105,12 @@ impl Cpu6502 {
 
     #[inline]
     pub fn break_flag(&self) -> bool {
-        self.p & 0x08 != 0
+        self.p & 0x10 != 0
     }
 
     #[inline]
     pub fn overflow(&self) -> bool {
-        self.p & 0x04 != 0
+        self.p & 0x40 != 0
     }
 
     #[inline]

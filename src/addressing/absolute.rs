@@ -1,8 +1,6 @@
-use crate::{
-    addressing::Addressing,
-    operand::{Addr, Val},
-    Cpu6502,
-};
+use crate::addressing::Addressing;
+use crate::cpu::Cpu6502;
+use crate::operand::{Addr, Val};
 
 pub struct Absolute;
 impl Absolute {

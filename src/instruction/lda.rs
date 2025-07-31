@@ -1,4 +1,9 @@
-use crate::{operand::Val, Cpu6502, Instruction};
+use crate::addressing::absolute::Absolute;
+use crate::addressing::immediate::Immediate;
+use crate::cpu::Cpu6502;
+use crate::instruction::Instruction;
+use crate::instruction::isa::isa6502::variant;
+use crate::operand::Val;
 
 pub struct Lda;
 impl Instruction<Val> for Lda {
@@ -10,3 +15,6 @@ impl Instruction<Val> for Lda {
         cpu.set_negative(cpu.a);
     }
 }
+
+variant! { 0xA9 => Lda: Immediate(Val) }
+variant! { 0xAD => Lda: Absolute(Val) }
